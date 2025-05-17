@@ -17,9 +17,9 @@ bingoSquares = list()
 goals = list() # where each square goal's string will be stored
 
 # get user input to change above values as desired MAKE SURE TO SANITIZE USER INPUT
-print(f"SETUP\n" + "-"*35)
+print(f"\nSETUP\n" + "-"*40)
 while True:
-    user_input = input(f"What base size should the board be?").strip()
+    user_input = input(f"What base size should the board be? ").strip()
     if user_input.isdigit():
         boardSize = int(user_input)
         print("\nYou entered:", boardSize)
@@ -33,8 +33,8 @@ for i in range(boardSize * boardSize):
 # randomize the list of square goals (strings) that serve as text
 randomGoals = random.sample(goals, len(goals))
 
-# print out the goals in table/bingo like order
-print(f"\n".join([" ".join(randomGoals[i:i+boardSize]) for i in range(0,len(randomGoals),boardSize)]) + "\n")
+# debug print out the goals in table/bingo like order
+# print(f"\n".join([" ".join(randomGoals[i:i+boardSize]) for i in range(0,len(randomGoals),boardSize)]) + "\n")
 
 # marked status is false by default, and the set of teams should be empty by default
 squareMarked = False
@@ -44,8 +44,13 @@ squareMarkedByTeams = set()
 for i in range(0, boardSize * boardSize):
     square = BingoBoardSquare(randomGoals[i], squareMarked, squareMarkedByTeams)
     bingoSquares.append(square)
+   # debug print statement below
+   # print(square.toString())
     
-for squares in bingoSquares:
-    print(f"\n" + squares.toString())
+#for squares in bingoSquares:
+#   print(f"\n" + squares.toString())
+
 # to create a BingoBoard, we need the size of the board, game mode bool, and a list of BingoBoardSquare()'s
-#bingoBoard = BingoBoard(boardSize, lockout, bingoSquares)
+bingoBoard = BingoBoard(boardSize, lockout, bingoSquares)
+print(f"\n\n LEGEND -> |goal_text [markedStatus] {{'team(s)WhoMarked'}}|\n")
+print(bingoBoard.toString())
