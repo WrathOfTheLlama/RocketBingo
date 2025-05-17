@@ -17,7 +17,7 @@ class ColorName():
     Name: str # The string name associated with the color
 
 
-# create a dataclass or class for bingo line
+# create a dataclass or class for bingo line maybe
 
 
 class BingoConstants():
