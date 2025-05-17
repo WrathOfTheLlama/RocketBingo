@@ -1,43 +1,51 @@
 import random # to randomly pick what is on the board
-import numpy # type: ignore
-import timer # type: ignore
+#import timeit
+#import timer # type: ignore
+# import numpy as np # type: ignore
 import tkinter as tk
 from tkinter import messagebox
-from flask import Flask, jsonify, request
-
-app = Flask(__name__)
-
-bingo_board = {} # dictionary used to store bingo board
-bingo_users = {}
-
-@app.route('/create-board/<user_id>', methods=['POST'])
-def create_board(userid):
-    # Generate a bingo board (replace with actual bingo board logic)
-    board = ["Square"*25]
-    bingo_board[userid] = board
-    return jsonify({'message': 'Board created', 'board': board})
+from BingoBoard import BingoBoard, BingoBoardSquare
+from BingoConstants import BingoConstants
+from BingoGameSettings import BingoGameSettings
 
 
-@app.route('/mark-square', methods=['POST'])
-def mark_square():
-    # Get user id and the square number that user is marking from the request
-    user_id = request.json['user_id']
-    square_num = request.json['square_number']
-    ... # use the square_num to navigate the bingo board and mark the square for that player
+# initialize some variables that will be passed to BingoBoard() class
+boardSize: int = 0
+teamNum: int = 0
+lockout: bool = False
+bingoSquares = list()
+goals = list() # where each square goal's string will be stored
 
-@app.route('/check-bingo', methods=['POST'])
-def check_bingo():
-    # Get user id from the request
-    user_id = request.json['user_id']
-    # Logic to check for bingo
-    return jsonify({'message': 'Bingo checked', 'user_id': user_id, 'bingo': True})
+# get user input to change above values as desired MAKE SURE TO SANITIZE USER INPUT
+print(f"SETUP\n" + "-"*35)
+while True:
+    user_input = input(f"What base size should the board be?").strip()
+    if user_input.isdigit():
+        boardSize = int(user_input)
+        print("\nYou entered:", boardSize)
+        break
+    else:
+        print("Invalid input! Please enter a valid integer.")
 
-@app.route('/get-board/<user_id>', methods=['GET'])
-def get_board(user_id):
-    if user_id in bingo_board:
-      return jsonify({'board': bingo_board[user_id]})
-    return jsonify({'message': 'No board found for this user'})
+for i in range(boardSize * boardSize):
+    goals.append(f"goal" + str(i+1))
 
+# randomize the list of square goals (strings) that serve as text
+randomGoals = random.sample(goals, len(goals))
 
-if __name__ == 'main':
-    app.run(debug=True)
+# print out the goals in table/bingo like order
+print(f"\n".join([" ".join(randomGoals[i:i+boardSize]) for i in range(0,len(randomGoals),boardSize)]) + "\n")
+
+# marked status is false by default, and the set of teams should be empty by default
+squareMarked = False
+squareMarkedByTeams = set()
+
+# now the list of squares is created, each requiring a text string, a "marked" bool, and a set of integers for what team(s) have marked it
+for i in range(0, boardSize * boardSize):
+    square = BingoBoardSquare(randomGoals[i], squareMarked, squareMarkedByTeams)
+    bingoSquares.append(square)
+    
+for squares in bingoSquares:
+    print(f"\n" + squares.toString())
+# to create a BingoBoard, we need the size of the board, game mode bool, and a list of BingoBoardSquare()'s
+#bingoBoard = BingoBoard(boardSize, lockout, bingoSquares)

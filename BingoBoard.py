@@ -1,6 +1,6 @@
 
 class BingoBoardSquare():
-     def __init__(self, text: str, marked:bool, team: list[int]):
+     def __init__(self, text: str, marked:bool, team: set[int]):
          self.text = text
          self.marked = marked
          self.team = team
@@ -9,7 +9,10 @@ class BingoBoardSquare():
          return self.team.__contains__(team) #get the team number that matches
 
      def toString(self) -> str:
-         return self.text # return the text on square as a string
+         string = ""
+         string += self.text
+         string += f" [{self.marked}]" 
+         return string # return the text on square as a string
      
 class BingoBoard():
     def __init__(self, size: int, lockoutBool: bool, squares: list[BingoBoardSquare]):
@@ -18,6 +21,11 @@ class BingoBoard():
         if (squares.Length != size * size):
            raise ValueError(f"Size must be EXACTLY {size*size}!") #ensure the board is the right number of squares
         self.squares = squares
+    
+    def toString(self) -> str:
+        endString = "BingoBoard toString placeholder"
+        ... # TO DO
+        return endString
 
 
 
