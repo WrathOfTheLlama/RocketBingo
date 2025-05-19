@@ -1,8 +1,0 @@
-The core idea is to create a bingo game with rocket league based squares.
-Use elden ring bingo as referance/example
-
-- There should be a GUI which allows user to input bingo square entries, select mode and start the game
-- May have to have rooms/passcode so people can edit the same board
-- Upon starting the game, the bingo board should stay on screen at all times
-- The bingo card should be interactive with mouse
-- The bingo card should/can be shared with mutliple users for lockout game type
